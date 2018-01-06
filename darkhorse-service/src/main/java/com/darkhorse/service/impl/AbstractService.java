@@ -64,18 +64,18 @@ public abstract class AbstractService<M extends Serializable, P extends PagePara
 	}
 
 	@Override
-	public Long insert(P param) {
+	public ServiceResult<Long> insert(P param) {
 		Object entity = resolveEntityData(param);
 		getDao().insert(entity);
 		if (entity instanceof AbstractEntity) {
-			return ((AbstractEntity) entity).getId();
+			return result(((AbstractEntity) entity).getId());
 		}
-		return -1L;
+		return result(-1L);
 	}
 
 	@Override
-	public Integer update(P param) {
-		return getDao().update(param);
+	public ServiceResult<Integer> update(P param) {
+		return result(getDao().update(param));
 	}
 
 	private Object resolveEntityData(P param) {
@@ -88,8 +88,8 @@ public abstract class AbstractService<M extends Serializable, P extends PagePara
 	}
 
 	@Override
-	public Integer delete(Long id) {
-		return getDao().delete(id);
+	public ServiceResult<Integer> delete(Long id) {
+		return result(getDao().delete(id));
 	}
 
 	private <D> ServiceResult<D> result(D data) {

@@ -15,10 +15,10 @@ public interface Service<M extends Serializable, P extends PageParam> {
 
 	ServiceResult<M> get(P param);
 
-	Long insert(P param);
+	ServiceResult<Long> insert(P param);
 
-	Integer update(P param);
+	ServiceResult<Integer> update(P param);
 
-	Integer delete(Long id);
+	ServiceResult<Integer> delete(Long id);
 
 }

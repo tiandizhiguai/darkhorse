@@ -1,20 +1,42 @@
 package com.darkhorse.rest.resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+import com.darkhorse.api.param.UsersParam;
+import com.darkhorse.api.service.UsersService;
+
+import reactor.core.publisher.Mono;
+
 @Configuration
 public class UserRest extends AbstractRest {
 
+	@Autowired
+	private UsersService usersService;
+
 	@Bean
-	public RouterFunction<ServerResponse> monoRouterFunction(UserHandler userHandler) {
-		return RouterFunctions.route(RequestPredicates.GET("/user/{id}").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), userHandler::get)
-				.andRoute(RequestPredicates.GET("/user/page/{pageNum}").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), userHandler::page)
-				.andRoute(RequestPredicates.POST("/user").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)), userHandler::update);
+	public RouterFunction<ServerResponse> monoRouterFunction() {
+		return RouterFunctions.route(get("/user/{id}"), request -> {
+			UsersParam param = new UsersParam();
+			param.setId(Long.valueOf(request.pathVariable("id")));
+			return result(Mono.just(usersService.get(param)));
+		})
+		.andRoute(get("/user/page/{pageNum}"), request -> {
+			UsersParam param = new UsersParam();
+			param.setPageNum(Integer.valueOf(request.pathVariable("pageNum")));
+			return result(Mono.just(usersService.getPage(param)));
+		})
+		.andRoute(post("/user"), request -> {
+			Mono<UsersParam> user = request.bodyToMono(UsersParam.class);
+			return result(Mono.just(usersService.insert(user.block())));
+		})
+		.andRoute(put("/user"), request -> {
+			Mono<UsersParam> user = request.bodyToMono(UsersParam.class);
+			return result(Mono.just(usersService.update(user.block())));
+		});
 	}
 }
