@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.darkhorse.service.dao.UsersDao">
+	<sql id="Base_Column_List">
+		id, real_name, login_name, password, id_number, sex, photo_name,
+		user_type, status,
+		city_code, province_code, last_login_time, create_time, update_time, marks
+	</sql>
+	<select id="select" resultType="com.darkhorse.service.dao.entity.UsersEntity"
+		parameterType="com.darkhorse.api.param.UsersParam">
+		select
+		<include refid="Base_Column_List" />
+		from users
+		where 1=1
+		<include refid="usersCondition"></include>
+		limit 1
+	</select>
+	<select id="selectList" resultType="com.darkhorse.service.dao.entity.UsersEntity"
+		parameterType="com.darkhorse.api.param.UsersParam">
+		select
+		<include refid="Base_Column_List" />
+		from users
+		where 1=1
+		<include refid="usersCondition"></include>
+	</select>
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from users
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.darkhorse.service.dao.entity.UsersEntity" keyProperty="id" useGeneratedKeys="true">
+		insert into users (id, real_name, login_name,
+		password, id_number, sex,
+		photo_name, user_type, status,
+		city_code, province_code, last_login_time,
+		create_time, update_time, marks
+		)
+		values (#{id,jdbcType=BIGINT}, #{realName,jdbcType=VARCHAR},
+		#{loginName,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR}, #{idNumber,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT},
+		#{photoName,jdbcType=VARCHAR}, #{userType,jdbcType=TINYINT},
+		#{status,jdbcType=TINYINT},
+		#{cityCode,jdbcType=VARCHAR}, #{provinceCode,jdbcType=VARCHAR},
+		#{lastLoginTime,jdbcType=TIMESTAMP},
+		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{marks,jdbcType=VARCHAR}
+		)
+	</insert>
+	<update id="update" parameterType="com.darkhorse.api.param.UsersParam">
+		update users
+		<set>
+			<if test="realName != null">
+				real_name = #{realName,jdbcType=VARCHAR},
+			</if>
+			<if test="loginName != null">
+				login_name = #{loginName,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="idNumber != null">
+				id_number = #{idNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				sex = #{sex,jdbcType=TINYINT},
+			</if>
+			<if test="photoName != null">
+				photo_name = #{photoName,jdbcType=VARCHAR},
+			</if>
+			<if test="userType != null">
+				user_type = #{userType,jdbcType=TINYINT},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+			<if test="cityCode != null">
+				city_code = #{cityCode,jdbcType=VARCHAR},
+			</if>
+			<if test="provinceCode != null">
+				province_code = #{provinceCode,jdbcType=VARCHAR},
+			</if>
+			<if test="lastLoginTime != null">
+				last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="marks != null">
+				marks = #{marks,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where 1=1
+		<include refid="usersCondition"></include>
+	</update>
+	
+	<sql id="usersCondition">
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="password != null">
+			and password = #{password,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		<if test="ids != null and ids.size > 0">
+			and id in
+			<foreach collection="ids" open="(" close=")" separator="," item="id">
+				#{id}
+			</foreach>
+		</if>
+	</sql>
+</mapper>

@@ -1,0 +1,19 @@
+spring: 
+  main:
+    sources: com.darkhorse.rest.RestBootstrap
+  jackson:
+    default-property-inclusion: non_null
+    date-format: yyyy-MM-dd HH:mm:ss
+server:
+  port: 8080
+jdbc:
+  url: "jdbc:mysql://localhost:3306/darkhorse?useUnicode=true&characterEncoding=utf-8"
+  username: root
+  password: 123456
+  driverClassName: com.mysql.jdbc.Driver
+  connectionTimeoutMs: 10000
+  idleTimeoutMs: 600000
+  maxLifetimeMs: 1800000
+  maxPoolSize: 50
+  minIdle: 10
+  connectionTestQuery: SELECT 1
