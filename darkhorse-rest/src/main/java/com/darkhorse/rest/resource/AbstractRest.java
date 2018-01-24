@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RequestPredicate;
 import org.springframework.web.reactive.function.server.RequestPredicates;
+import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import com.darkhorse.api.result.RestResult;
@@ -18,17 +19,7 @@ public abstract class AbstractRest {
 
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-//	<D extends Serializable> Mono<ServerResponse> successResult(D data) {
-//		return result(0, null, data);
-//	}
-//
-//	<D extends Serializable> Mono<ServerResponse> failResult(String msg) {
-//		return result(-1, msg, null);
-//	}
-//
-//	<D extends Serializable> Mono<ServerResponse> failResult(String msg, D data) {
-//		return result(-1, msg, data);
-//	}
+	abstract RouterFunction<ServerResponse> route();
 
 	<D extends Serializable> Mono<ServerResponse> result(Mono<ServiceResult<D>> serviceMonoData) {
 		ServiceResult<D> serviceResult = serviceMonoData.block();

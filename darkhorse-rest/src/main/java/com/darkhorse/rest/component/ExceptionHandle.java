@@ -18,7 +18,7 @@ import com.darkhorse.api.result.Result;
 * @version V1.0
 * @author cgw
 * @Date 2017年9月4日 下午5:58:33
-* @since JDK 1.8
+* @since JDK 1.9
  */
 @ControllerAdvice
 public class ExceptionHandle {

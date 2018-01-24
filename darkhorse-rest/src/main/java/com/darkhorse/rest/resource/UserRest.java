@@ -19,7 +19,7 @@ public class UserRest extends AbstractRest {
 	private UsersService usersService;
 
 	@Bean
-	public RouterFunction<ServerResponse> monoRouterFunction() {
+	public RouterFunction<ServerResponse> route() {
 		return RouterFunctions.route(get("/user/{id}"), request -> {
 			UsersParam param = new UsersParam();
 			param.setId(Long.valueOf(request.pathVariable("id")));
